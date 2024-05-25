@@ -11,7 +11,6 @@ import (
 )
 
 /*
-gopi@tazapay.com
 
 Write a load-test tool:
 Send thousands of requests to a server to analyze its performance
@@ -33,7 +32,7 @@ Summary:
 	Slowest    : 4.605ms
 */
 type Summary struct {
-	Success  int
+	Success  float64
 	RPS      float64
 	Requests int
 	Errors   int
@@ -51,7 +50,7 @@ type HTTPResponse struct {
 }
 
 func main() {
-	numRequest := flag.Int("n", 100, "Number of Requests")
+	numRequest := flag.Int("n", 10000, "Number of Requests")
 	threads := flag.Int("c", 100, "Number of concurrent threads")
 	flag.Parse()
 	initialTime := time.Now()
@@ -92,7 +91,7 @@ func main() {
 		total += out.Duration
 	}
 	fmt.Println("success", success)
-	successPer := (success / (*numRequest)) * 100
+	successPer := (float64(success) / float64(*numRequest)) * 100
 	//sp := fmt.Sprintf("%dpercent", successPer)
 
 	rps := float64(len(outArr)) / time.Since(initialTime).Seconds() // total request /total time
